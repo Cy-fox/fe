@@ -45,3 +45,8 @@ next-env.d.ts
 # dev
 dev/
 dev.*
+
+# local config
+fe-CLAUDE.md
+CLAUDE.md
+.claude/

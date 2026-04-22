@@ -1,6 +1,7 @@
 import { EmptyPlaceholder } from "@/components/core/common/EmptyPlaceholder";
 import { Tags } from "@/components/core/common/Tags";
 import { formatAvailability } from "@/components/Dashboard/Profile/sections/VolunteerProfile/formatters";
+import { useApiLanguages } from "@/components/Dashboard/Profile/sections/VolunteerProfile/hooks";
 import { EditableField } from "@/components/EditableField/EditableField";
 import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
 import { ApiOpportunityGet, Lang, LangPurpose, VolunteerStateTypeType } from "need4deed-sdk";
@@ -20,9 +21,19 @@ export function OpportunityDetailsDisplay({ opportunity }: Props) {
   const opp = opportunity as OpportunityWithDetails;
   const prefix = "dashboard.opportunityProfile.opportunityDetails";
 
-  const isEventType = opp.volunteerType === VolunteerStateTypeType.EVENTS;
+  const { data: apiLanguages = [] } = useApiLanguages();
 
-  const mainCommunication = formatLanguagesByPurpose(opp.languages, LangPurpose.GENERAL, t);
+  const isEventType = opp.volunteerType === VolunteerStateTypeType.EVENTS;
+  const isAccompanying = opp.volunteerType === VolunteerStateTypeType.ACCOMPANYING;
+
+  const languageIdToTitle: Record<string, string> = {};
+  apiLanguages.forEach((lang) => {
+    languageIdToTitle[String(lang.id)] = lang.title;
+  });
+
+  const mainCommunication = isAccompanying
+    ? (languageIdToTitle[opp.accompanyingDetails?.languageToTranslate ?? ""] ?? EMPTY_PLACEHOLDER_VALUE)
+    : formatLanguagesByPurpose(opp.languages, LangPurpose.GENERAL, t);
   const residentsSpeak = formatLanguagesByPurpose(opp.languages, LangPurpose.RECIPIENT, t);
   const schedule = formatAvailability(opp.availability, t);
   const activities = extractOptionTitles(opp.activities, lang);

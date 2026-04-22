@@ -423,7 +423,8 @@
     "header": {
       "button": {
         "login": "Anmelden",
-        "joinVolunteer": "Jetzt sich engagieren"
+        "joinVolunteer": "Jetzt sich engagieren",
+        "dashboard": "Dashboard"
       }
     },
     "login": {
@@ -1064,6 +1065,8 @@
         "mainCommunication": "Hauptkommunikation",
         "residentsSpeak": "Bewohner sprechen",
         "schedule": "Zeitplan",
+        "eventDate": "Veranstaltungsdatum",
+        "eventTime": "Veranstaltungszeit",
         "numberOfVolunteers": "Anzahl der Freiwilligen",
         "activities": "Aktivitäten",
         "skills": "Fähigkeiten & Erfahrung",

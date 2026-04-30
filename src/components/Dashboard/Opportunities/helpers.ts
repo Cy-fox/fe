@@ -1,5 +1,14 @@
-import { ApiLanguage, ApiOptionLists, LangPurpose, OptionById, QueryParamsKeys } from "need4deed-sdk";
+import {
+  ApiLanguage,
+  ApiOptionLists,
+  EntityTableName,
+  LangPurpose,
+  OptionById,
+  OptionItem,
+  QueryParamsKeys,
+} from "need4deed-sdk";
 import { ReadonlyURLSearchParams } from "next/navigation";
+import { AvailabilityKeys, AvailabilitySubKeys, SEPARATOR } from "./Filters/constants";
 import { OpportunityCardsFilter } from "./Filters/types";
 
 interface SerializeFiltersOptions {
@@ -50,6 +59,25 @@ export function serializeOpportunityFilters(
     }
   });
 
+  params.delete(EntityTableName.ACTIVITY);
+  Object.entries(filter.activity).forEach(([key, value]) => {
+    if (value === true) {
+      const paramValue =
+        (options?.serializeToIDs && options.apiFilterOptions?.activity?.find((d) => d.title === key)?.id) || key;
+      params.append(EntityTableName.ACTIVITY, String(paramValue));
+    }
+  });
+
+  params.delete(QueryParamsKeys.AVAILABILITY);
+  Object.entries(filter.availability).forEach(([key, subSlot]) => {
+    const availabilityKey = key as AvailabilityKeys;
+    Object.entries(subSlot).forEach(([slot, value]) => {
+      if (value) {
+        params.append(QueryParamsKeys.AVAILABILITY, `${availabilityKey}${SEPARATOR}${slot}`);
+      }
+    });
+  });
+
   return asString ? params.toString() : params;
 }
 
@@ -64,22 +92,37 @@ export function deserializeOpportunityFilters(
 
   const queryDistricts = searchParams.getAll(QueryParamsKeys.DISTRICT);
   queryDistricts.forEach((d) => {
-    if (newFilter.district[d] !== undefined) newFilter.district[d] = true;
+    newFilter.district[d] = true;
   });
-
   const queryLanguages = searchParams.getAll(QueryParamsKeys.LANGUAGE);
   queryLanguages.forEach((l) => {
-    if (newFilter.language[l] !== undefined) newFilter.language[l] = true;
+    newFilter.language[l] = true;
   });
 
   const queryStatus = searchParams.getAll("status");
   queryStatus.forEach((s) => {
-    if (newFilter.status[s] !== undefined) newFilter.status[s] = true;
+    newFilter.status[s] = true;
   });
 
   const queryType = searchParams.getAll("type");
   queryType.forEach((s) => {
-    if (newFilter.type[s] !== undefined) newFilter.type[s] = true;
+    newFilter.type[s] = true;
+  });
+
+  const queryActivities = searchParams.getAll(EntityTableName.ACTIVITY);
+  queryActivities.forEach((l) => {
+    newFilter.activity[l] = true;
+  });
+
+  const queryAvailability = searchParams.getAll(QueryParamsKeys.AVAILABILITY);
+  queryAvailability.forEach((item) => {
+    const [firstKey, secondKey] = item.split(SEPARATOR);
+    const avKey = firstKey as AvailabilityKeys;
+    const avSubKey = secondKey as AvailabilitySubKeys;
+    const subFilter = newFilter.availability[avKey] as Record<AvailabilitySubKeys, boolean>;
+    if (subFilter && subFilter[avSubKey] !== undefined) {
+      subFilter[avSubKey] = true;
+    }
   });
 
   return newFilter;
@@ -96,4 +139,10 @@ export function getLanguagesByPurpose(languages: ApiLanguage[] | undefined, purp
 export function getOptionTitles(items: OptionById[] | undefined): string[] {
   if (!items || !Array.isArray(items)) return [];
   return items.map((item) => (typeof item.title === "string" ? item.title : "")).filter(Boolean);
+}
+
+export function getActivityTitles(activities: OptionById[], activityList: OptionItem[] | undefined): string[] {
+  if (!activities?.length || !activityList?.length) return [];
+  const activityMap = new Map(activityList.map((item) => [String(item.id), item.title]));
+  return activities.map((act) => activityMap.get(String(act.id))).filter((title): title is string => Boolean(title));
 }

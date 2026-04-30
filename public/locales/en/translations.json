@@ -252,6 +252,8 @@
           "header": "Type Of Opportunity",
           "volunteering": "Volunteering Opportunity",
           "accompanying": "Accompanying Appointment",
+          "regular": "Regular",
+          "events": "Events",
           "helpText": "There are two ways of helping: Volunteering doing various activities and Accompanying to appointments essentially providing translation",
           "helpTitle": ""
         },
@@ -346,6 +348,7 @@
         "accompanyingDesc": "Only show volunteers that are open to bring residents to individual appointments",
         "district": "District",
         "languages": "Languages",
+        "activities": "Activities",
         "engagement": {
           "header": "Engagement",
           "active": "Active",
@@ -396,6 +399,12 @@
       }
     },
     "home": {
+      "content": {
+        "header": "Dashboard Home",
+        "newOpportunities": "Newest Opportunities",
+        "newVolunteers": "Newest Volunteers",
+        "loading": "Loading..."
+      },
       "sidebar": {
         "home": "Home",
         "volunteers": "Volunteers",
@@ -423,7 +432,8 @@
     "header": {
       "button": {
         "login": "Log in",
-        "joinVolunteer": "Join as a volunteer"
+        "joinVolunteer": "Join as a volunteer",
+        "dashboard": "Dashboard"
       }
     },
     "login": {
@@ -589,11 +599,14 @@
         "title": "Volunteer profile",
         "edit": "Edit",
         "languages": "Languages",
+        "mainCommunication": "Main communication",
+        "languagesToTranslate": "Language to translate",
         "availability": "Availability",
         "districts": "Districts",
         "volunteerType": "Volunteer type",
         "activities": "Activities",
         "skills": "Skills & experience",
+        "comments": "Comments",
         "cancel": "Cancel",
         "saveChanges": "Save changes",
         "saveSuccess": "Profile updated successfully",
@@ -613,6 +626,8 @@
       "typeOfDocument": "Type of document",
       "status": "Status",
       "uploadedOn": "Uploaded on",
+      "received": "Received",
+      "receivedOn": "Received on",
       "actions": "Actions",
       "uploaded": "Uploaded",
       "missing": "Missing",
@@ -775,6 +790,33 @@
           "opp-searching": "Searching",
           "opp-active": "Active",
           "opp-past": "Past"
+        },
+        "schedule": {
+          "header": "Schedule"
+        },
+        "preferredAv": {
+          "days": {
+            "header": "Days",
+            "Monday": "Mon",
+            "Tuesday": "Tue",
+            "Wednesday": "Wed",
+            "Thursday": "Thu",
+            "Friday": "Fr",
+            "Saturday": "Sat",
+            "Sunday": "Sun"
+          },
+          "times": {
+            "header": "Times",
+            "08-11": "08-11",
+            "11-14": "11-14",
+            "14-17": "14-17",
+            "17-20": "17-20"
+          },
+          "occasional": {
+            "header": "Occasional",
+            "weekdays": "Weekdays",
+            "weekends": "Weekends"
+          }
         }
       },
       "accompanyingTranslation": {
@@ -979,6 +1021,20 @@
         "unmatched": "Unmatched"
       },
       "statusUpdateSuccess": "Opportunity status updated successfully",
+      "change_status": "Change status",
+      "statusModal": {
+        "title": "Change opportunity status",
+        "save": "Save",
+        "cancel": "Cancel",
+        "options": {
+          "new": "New / Needs validation",
+          "new_description": "The opportunity was not validated yet.",
+          "searching": "Validated",
+          "searching_description": "The opportunity was validated, it can be searched for.",
+          "inactive": "Inactive",
+          "inactive_description": "The opportunity is no longer active."
+        }
+      },
       "contactDetailsTitle": "Contact details",
       "editButtonName": "Edit",
       "contactDetails": {
@@ -1020,11 +1076,21 @@
       "accompanyingDetailsTitle": "Accompanying details",
       "accompanyingDetails": {
         "appointmentAddress": "Appointment address",
+        "appointmentPostcode": "Appointment postcode",
+        "appointmentDistrict": "Appointment district",
         "appointmentDate": "Appointment date",
         "appointmentTime": "Appointment time",
         "refugeeNumber": "Refugee number",
         "refugeeName": "Refugee name",
         "languageToTranslate": "Language to translate",
+        "refugeeLanguage": "Refugee language",
+        "appointmentLanguage": "Appointment language",
+        "appointmentLanguageOptions": {
+          "german": "German",
+          "english": "English",
+          "englishGerman": "English/German",
+          "noTranslation": "No translation needed"
+        },
         "cancel": "Cancel",
         "saveChanges": "Save changes",
         "saveSuccess": "Accompanying details updated successfully",
@@ -1059,17 +1125,22 @@
       },
       "opportunityDetails": {
         "title": "Opportunity details",
+        "opportunityName": "Name",
         "description": "Description",
         "mainCommunication": "Main communication",
         "residentsSpeak": "Residents speak",
         "schedule": "Schedule",
+        "eventDate": "Event date",
+        "eventTime": "Event time",
         "numberOfVolunteers": "Number of volunteers",
         "activities": "Activities",
         "skills": "Skills & experience",
         "descriptionHint": "Max. {{max}} characters",
         "cancel": "Cancel",
         "saveChanges": "Save changes",
+        "saveSuccess": "Opportunity updated successfully",
         "validation": {
+          "opportunityNameRequired": "Name is required",
           "descriptionRequired": "Description is required",
           "descriptionTooLong": "Description is too long",
           "numberOfVolunteersRequired": "Number of volunteers must be at least 1",
@@ -1267,6 +1338,7 @@
     "farsi/dari": "Farsi/Dari",
     "farsi": "Farsi",
     "dari": "Dari",
+    "persian": "Farsi/Dari",
     "turkish": "Turkish",
     "russian": "Russian",
     "ukrainian": "Ukrainian",

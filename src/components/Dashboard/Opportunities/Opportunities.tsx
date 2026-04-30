@@ -14,9 +14,9 @@ import { defaultOpportunityCardsFilter } from "./Filters/constants";
 import FiltersContent from "./Filters/FiltersContent";
 import { OpportunityCardsFilter } from "./Filters/types";
 import { createSelectedOpportunityFiltersAsFlatArray } from "./Filters/helpers";
-import { serializeOpportunityFilters } from "./helpers";
+import { deserializeOpportunityFilters, serializeOpportunityFilters } from "./helpers";
 import { OpportunityListController } from "./OpportunityListController";
-import { OpportunitiesContainer } from "./styles";
+import { ContentRow, OpportunitiesContainer } from "./styles";
 
 export function Opportunities() {
   const { t } = useTranslation();
@@ -70,23 +70,21 @@ export function Opportunities() {
     if (!apiFilterOptions) return;
 
     setCardsFilter((prev) => {
-      const district = createFilterFromOption(apiFilterOptions, EntityTableName.DISTRICT);
-      const language = createFilterFromOption(apiFilterOptions, EntityTableName.LANGUAGE);
-      return { ...prev, district, language };
+      const baseFilters = {
+        ...prev,
+        district: createFilterFromOption(apiFilterOptions, EntityTableName.DISTRICT),
+        language: createFilterFromOption(apiFilterOptions, EntityTableName.LANGUAGE),
+        activity: createFilterFromOption(apiFilterOptions, EntityTableName.ACTIVITY),
+      };
+
+      return deserializeOpportunityFilters(baseFilters, searchParams);
     });
-  }, [apiFilterOptions]);
+  }, [apiFilterOptions, searchParams]);
 
   const activeFilters = createSelectedOpportunityFiltersAsFlatArray(cardsFilter, setCardsFilter, t);
-
   return (
     <DashboardLayout>
       <OpportunitiesContainer data-testid="opportunities-container">
-        <Filters
-          isFiltersOpen={isFiltersOpen}
-          setIsFiltersOpen={setIsFiltersOpen}
-          filtersContent={<FiltersContent setFilter={handleFilterUpdate} filter={cardsFilter} />}
-        />
-
         <CardsHeader
           header={t("dashboard.opportunities.opportunities")}
           resultCounter={numOfOpps}
@@ -105,14 +103,21 @@ export function Opportunities() {
           entityFilter={volunteerFilter ? { ...volunteerFilter, onRemove: handleRemoveVolunteerFilter } : undefined}
         />
 
-        <OpportunityListController
-          setNumOfOpps={setNumOfOpps}
-          sortOrder={sortOrder}
-          isFiltersOpen={isFiltersOpen}
-          filter={cardsFilter}
-          apiFilterOptions={apiFilterOptions}
-          volunteerId={volunteerId}
-        />
+        <ContentRow>
+          <OpportunityListController
+            setNumOfOpps={setNumOfOpps}
+            sortOrder={sortOrder}
+            isFiltersOpen={isFiltersOpen}
+            filter={cardsFilter}
+            apiFilterOptions={apiFilterOptions}
+            volunteerId={volunteerId}
+          />
+          <Filters
+            isFiltersOpen={isFiltersOpen}
+            setIsFiltersOpen={setIsFiltersOpen}
+            filtersContent={<FiltersContent setFilter={handleFilterUpdate} filter={cardsFilter} />}
+          />
+        </ContentRow>
       </OpportunitiesContainer>
     </DashboardLayout>
   );

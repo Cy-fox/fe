@@ -1,8 +1,8 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-
 import { DashboardLayout } from "@/components/Layout";
 import { apiPathOption, questionMark } from "@/config/constants";
 import { useGetOpportunity, useGetQuery } from "@/hooks";
@@ -14,7 +14,12 @@ import { getClearFilter } from "../common/CardsFilter/helpers";
 import { defaultVolunteerCardsFilter } from "./Filters/constants";
 import FiltersContent from "./Filters/FiltersContent";
 import { CardsFilter } from "./Filters/types";
-import { createFilterFromOption, createSelectedFilterItemsAsFlatArray, serializeFilters } from "./helpers";
+import {
+  createFilterFromOption,
+  createSelectedFilterItemsAsFlatArray,
+  deserializeVolunteerFilters,
+  serializeFilters,
+} from "./helpers";
 import { VolunteerListController } from "./VolunteerListController";
 
 export function Volunteers() {
@@ -63,26 +68,22 @@ export function Volunteers() {
   useEffect(() => {
     if (!apiFilterOptions) return;
 
-    // Merge and set 'district' - 'languages' of query params and API option
     setCardsFilter((prev) => {
-      const district = createFilterFromOption(apiFilterOptions, EntityTableName.DISTRICT);
-      const language = createFilterFromOption(apiFilterOptions, EntityTableName.LANGUAGE);
+      const baseFilters = {
+        ...prev,
+        district: createFilterFromOption(apiFilterOptions, EntityTableName.DISTRICT),
+        language: createFilterFromOption(apiFilterOptions, EntityTableName.LANGUAGE),
+      };
 
-      return { ...prev, district, language };
+      return deserializeVolunteerFilters(baseFilters, searchParams);
     });
-  }, [apiFilterOptions]);
+  }, [apiFilterOptions, searchParams]);
 
   const activeFilters = createSelectedFilterItemsAsFlatArray(cardsFilter, setCardsFilter, t);
 
   return (
     <DashboardLayout>
       <VolunteersContainer>
-        <Filters
-          isFiltersOpen={isFiltersOpen}
-          setIsFiltersOpen={setIsFiltersOpen}
-          filtersContent={<FiltersContent setFilter={handleFilterUpdate} filter={cardsFilter} />}
-        />
-
         <CardsHeader
           header={t("dashboard.volunteers.volunteers")}
           resultCounter={numOfVols}
@@ -101,14 +102,21 @@ export function Volunteers() {
             opportunityFilter ? { ...opportunityFilter, onRemove: handleRemoveOpportunityFilter } : undefined
           }
         />
-        <VolunteerListController
-          setNumOfVols={setNumOfVols}
-          sortOrder={sortOrder}
-          isFiltersOpen={isFiltersOpen}
-          filter={cardsFilter}
-          apiFilterOptions={apiFilterOptions}
-          opportunityId={opportunityId}
-        />
+        <ContentRow>
+          <VolunteerListController
+            setNumOfVols={setNumOfVols}
+            sortOrder={sortOrder}
+            isFiltersOpen={isFiltersOpen}
+            filter={cardsFilter}
+            apiFilterOptions={apiFilterOptions}
+            opportunityId={opportunityId}
+          />
+          <Filters
+            isFiltersOpen={isFiltersOpen}
+            setIsFiltersOpen={setIsFiltersOpen}
+            filtersContent={<FiltersContent setFilter={handleFilterUpdate} filter={cardsFilter} />}
+          />
+        </ContentRow>
       </VolunteersContainer>
     </DashboardLayout>
   );
@@ -119,8 +127,14 @@ export default Volunteers;
 /** Styles */
 
 const VolunteersContainer = styled.div`
-  position: relative;
   display: flex;
   flex-direction: column;
+  gap: var(--dashboard-volunteers-container-gap);
+`;
+
+const ContentRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
   gap: var(--dashboard-volunteers-container-gap);
 `;

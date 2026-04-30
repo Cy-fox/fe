@@ -2,7 +2,7 @@
 
 import { DashboardLayout } from "@/components/Layout";
 import { AgentListController } from "./AgentListController";
-import { AgentsContainer } from "./styles";
+import { AgentsContainer, ContentRow } from "./styles";
 import CardsHeader from "../common/CardsHeader/CardsHeader";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
@@ -14,7 +14,7 @@ import { AgentCardsFilter } from "./Filters/types";
 import { createSelectedAgentFiltersAsFlatArray } from "./Filters/helpers";
 import { defaultAgentCardsFilter } from "./Filters/constants";
 import { createFilterFromOption, getClearFilter } from "../common/CardsFilter/helpers";
-import { serializeAgentFilters } from "./helpers";
+import { deserializeAgentFilters, serializeAgentFilters } from "./helpers";
 import Filters from "../common/CardsFilter/Filters";
 import FiltersContent from "./Filters/FiltersContent";
 
@@ -55,21 +55,19 @@ export const Agents = () => {
     if (!apiFilterOptions) return;
 
     setCardsFilter((prev) => {
-      const district = createFilterFromOption(apiFilterOptions, EntityTableName.DISTRICT);
-      return { ...prev, district };
+      const baseFilters = {
+        ...prev,
+        district: createFilterFromOption(apiFilterOptions, EntityTableName.DISTRICT),
+      };
+
+      return deserializeAgentFilters(baseFilters, searchParams);
     });
-  }, [apiFilterOptions]);
+  }, [apiFilterOptions, searchParams]);
 
   const activeFilters = createSelectedAgentFiltersAsFlatArray(cardsFilter, setCardsFilter, t);
   return (
     <DashboardLayout>
       <AgentsContainer data-testid="agents-container">
-        <Filters
-          isFiltersOpen={isFiltersOpen}
-          setIsFiltersOpen={setIsFiltersOpen}
-          filtersContent={<FiltersContent setFilter={handleFilterUpdate} filter={cardsFilter} />}
-        />
-
         <CardsHeader
           header={t("dashboard.agents.agents")}
           resultCounter={numOfAgents}
@@ -86,13 +84,20 @@ export const Agents = () => {
           activeFilters={activeFilters}
           onClearAllFilters={handleClearAllFilters}
         />
-        <AgentListController
-          setNumOfAgents={setNumOfAgents}
-          sortOrder={sortOrder}
-          isFiltersOpen={isFiltersOpen}
-          filter={cardsFilter}
-          apiFilterOptions={apiFilterOptions}
-        />
+        <ContentRow>
+          <AgentListController
+            setNumOfAgents={setNumOfAgents}
+            sortOrder={sortOrder}
+            isFiltersOpen={isFiltersOpen}
+            filter={cardsFilter}
+            apiFilterOptions={apiFilterOptions}
+          />
+          <Filters
+            isFiltersOpen={isFiltersOpen}
+            setIsFiltersOpen={setIsFiltersOpen}
+            filtersContent={<FiltersContent setFilter={handleFilterUpdate} filter={cardsFilter} />}
+          />
+        </ContentRow>
       </AgentsContainer>
     </DashboardLayout>
   );

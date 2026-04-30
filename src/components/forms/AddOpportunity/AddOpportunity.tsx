@@ -146,17 +146,19 @@ export default function AddOpportunity() {
             name="email"
             FieldTag={formOpportunity.Field}
             label={t("form.addOpportunity.fields.contactGroup.email.label")}
-            onChangeValidator={({ value }) => {
-              if (!value) {
-                return t("form.error.required");
-              }
-              if (!validateEmail(value as string)) {
-                return t("form.error.email");
-              }
-              return undefined;
-            }}
-            onChangeAsyncValidator={({ value }) => {
-              return validateRACEmail(value as string, t("form.error.badEmail"));
+            validators={{
+              onChange: ({ value }) => {
+                if (!value) return t("form.error.required");
+                if (!validateEmail(value as string)) return t("form.error.email");
+                return undefined;
+              },
+              onSubmit: ({ value }) => {
+                if (!value) return t("form.error.required");
+                if (!validateEmail(value as string)) return t("form.error.email");
+                return undefined;
+              },
+              onChangeAsync: ({ value }) => validateRACEmail(value as string, t("form.error.badEmail")),
+              onChangeAsyncDebounceMs: 500,
             }}
           />
           <SimpleInputField<OpportunityData>
@@ -222,7 +224,7 @@ export default function AddOpportunity() {
               </HeaderWithHelp>
               <div className={style["form-chip-list"]}>
                 <MultipleRadioInputsWithMore
-                  items={Object.values(OpportunityType)}
+                  items={[OpportunityType.ACCOMPANYING, OpportunityType.REGULAR]}
                   copyPath="form.addOpportunity.fields.opportunityType."
                   field={field}
                 />

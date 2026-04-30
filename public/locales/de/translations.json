@@ -252,6 +252,8 @@
           "header": "Art des Bedarfs",
           "volunteering": "Freizeit",
           "accompanying": "Begleitung",
+          "regular": "Regelmäßig",
+          "events": "Veranstaltung",
           "helpText": "Es gibt zwei Arten von Unterstützung: Freiwilliges Engagement bei verschiedenen Aktivitäten (meist Freizeitaktivitäten) und Begleitung zu Terminen.",
           "helpTitle": ""
         },
@@ -346,6 +348,7 @@
         "accompanyingDesc": "Nur Freiwillige anzeigen, die bereit sind, Bewohner zu einzelnen Terminen zu begleiten",
         "district": "Bezirk",
         "languages": "Sprachen",
+        "activities": "Aktivitäten",
         "engagement": {
           "header": "Engagement",
           "active": "Aktiv",
@@ -396,6 +399,12 @@
       }
     },
     "home": {
+      "content": {
+        "header": "Dashboard Startseite",
+        "newOpportunities": "Neueste Möglichkeiten",
+        "newVolunteers": "Neueste Freiwillige",
+        "loading": "Wird geladen..."
+      },
       "sidebar": {
         "home": "Startseite",
         "volunteers": "Freiwillige",
@@ -423,7 +432,8 @@
     "header": {
       "button": {
         "login": "Anmelden",
-        "joinVolunteer": "Jetzt sich engagieren"
+        "joinVolunteer": "Jetzt sich engagieren",
+        "dashboard": "Dashboard"
       }
     },
     "login": {
@@ -590,11 +600,14 @@
         "title": "Freiwilligenprofil",
         "edit": "Bearbeiten",
         "languages": "Sprachen",
+        "mainCommunication": "Hauptkommunikation",
+        "languagesToTranslate": "Sprache zum Übersetzen",
         "availability": "Verfügbarkeit",
         "districts": "Bezirke",
         "volunteerType": "Freiwilligen-Typ",
         "activities": "Aktivitäten",
         "skills": "Fähigkeiten & Erfahrungen",
+        "comments": "Kommentare",
         "cancel": "Abbrechen",
         "saveChanges": "Änderungen speichern",
         "saveSuccess": "Profil erfolgreich aktualisiert",
@@ -734,6 +747,33 @@
           "opp-searching": "Suche läuft",
           "opp-active": "Aktiv",
           "opp-past": "Vergangen"
+        },
+        "schedule": {
+          "header": "Zeitplan"
+        },
+        "preferredAv": {
+          "days": {
+            "header": "Tage",
+            "Monday": "Mo",
+            "Tuesday": "Di",
+            "Wednesday": "Mi",
+            "Thursday": "Do",
+            "Friday": "Fr",
+            "Saturday": "Sa",
+            "Sunday": "So"
+          },
+          "times": {
+            "header": "Zeiten",
+            "08-11": "08-11",
+            "11-14": "11-14",
+            "14-17": "14-17",
+            "17-20": "17-20"
+          },
+          "occasional": {
+            "header": "Gelegentlich",
+            "weekdays": "Wochentage",
+            "weekends": "Wochenenden"
+          }
         }
       },
       "accompanyingTranslation": {
@@ -758,6 +798,8 @@
       "typeOfDocument": "Dokumenttyp",
       "status": "Status",
       "uploadedOn": "Hochgeladen am",
+      "received": "Erhalten",
+      "receivedOn": "Erhalten am",
       "actions": "Aktionen",
       "uploaded": "Hochgeladen",
       "missing": "Fehlend",
@@ -980,6 +1022,20 @@
         "unmatched": "Nicht gematcht"
       },
       "statusUpdateSuccess": "Status der Möglichkeit erfolgreich aktualisiert",
+      "change_status": "Status ändern",
+      "statusModal": {
+        "title": "Opportunitätsstatus ändern",
+        "save": "Speichern",
+        "cancel": "Abbrechen",
+        "options": {
+          "new": "Neu / Validierung erforderlich",
+          "new_description": "Die Möglichkeit wurde noch nicht validiert.",
+          "searching": "Validiert",
+          "searching_description": "Die Möglichkeit wurde validiert, es kann nach ihr gesucht werden.",
+          "inactive": "Inaktiv",
+          "inactive_description": "Die Möglichkeit ist nicht mehr aktiv."
+        }
+      },
       "contactDetailsTitle": "Kontaktdaten",
       "editButtonName": "Bearbeiten",
       "contactDetails": {
@@ -1021,11 +1077,21 @@
       "accompanyingDetailsTitle": "Begleitdetails",
       "accompanyingDetails": {
         "appointmentAddress": "Terminadresse",
+        "appointmentPostcode": "Terminpostleitzahl",
+        "appointmentDistrict": "Terminbezirk",
         "appointmentDate": "Termindatum",
         "appointmentTime": "Terminzeit",
         "refugeeNumber": "Geflüchtetennummer",
         "refugeeName": "Name des Geflüchteten",
         "languageToTranslate": "Zu übersetzende Sprache",
+        "refugeeLanguage": "Flüchtlingssprache",
+        "appointmentLanguage": "Terminsprache",
+        "appointmentLanguageOptions": {
+          "german": "Deutsch",
+          "english": "Englisch",
+          "englishGerman": "Englisch/Deutsch",
+          "noTranslation": "Keine Übersetzung erforderlich"
+        },
         "cancel": "Abbrechen",
         "saveChanges": "Änderungen speichern",
         "saveSuccess": "Begleitdetails erfolgreich aktualisiert",
@@ -1060,17 +1126,22 @@
       },
       "opportunityDetails": {
         "title": "Details der Möglichkeit",
+        "opportunityName": "Name",
         "description": "Beschreibung",
         "mainCommunication": "Hauptkommunikation",
         "residentsSpeak": "Bewohner sprechen",
         "schedule": "Zeitplan",
+        "eventDate": "Veranstaltungsdatum",
+        "eventTime": "Veranstaltungszeit",
         "numberOfVolunteers": "Anzahl der Freiwilligen",
         "activities": "Aktivitäten",
         "skills": "Fähigkeiten & Erfahrung",
         "descriptionHint": "Max. {{max}} Zeichen",
         "cancel": "Abbrechen",
         "saveChanges": "Änderungen speichern",
+        "saveSuccess": "Möglichkeit erfolgreich aktualisiert",
         "validation": {
+          "opportunityNameRequired": "Name ist erforderlich",
           "descriptionRequired": "Beschreibung ist erforderlich",
           "descriptionTooLong": "Beschreibung ist zu lang",
           "numberOfVolunteersRequired": "Anzahl der Freiwilligen muss mindestens 1 sein",
@@ -1635,6 +1706,7 @@
     "farsi/dari": "Farsi/Dari",
     "farsi": "Farsi",
     "dari": "Dari",
+    "persian": "Farsi/Dari",
     "turkish": "Türkisch",
     "russian": "Russisch",
     "ukrainian": "Ukrainisch",
